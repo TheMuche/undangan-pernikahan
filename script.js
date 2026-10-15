@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (el && text !== undefined) el.textContent = text;
   };
 
-  // 1. Ambil Nama Tamu dari URL (?to=Nama+Tamu)
+  // 1. Dapatkan Nama Tamu
   const urlParams = new URLSearchParams(window.location.search);
   const guestName = urlParams.get('to');
   if (guestName) {
@@ -15,16 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2. Load data dari config.js
   if (typeof CONFIG !== 'undefined') {
-    const namaPasangan = `${CONFIG.mempelaiWanita?.namaPanggilan || 'Aisyah'} & ${CONFIG.mempelaiPria?.namaPanggilan || 'Dedy'}`;
+    const namaPasangan = `${CONFIG.mempelaiWanita?.namaPanggilan || 'AISYAH'} · ${CONFIG.mempelaiPria?.namaPanggilan || 'DEDY'}`;
     setText('cover-mempelai', namaPasangan);
     setText('hero-mempelai', namaPasangan);
     setText('footer-mempelai', namaPasangan);
+    setText('cover-waktu', CONFIG.waktuTeks || '');
     setText('hero-waktu', CONFIG.waktuTeks || '');
     setText('pria-nama', CONFIG.mempelaiPria?.namaLengkap || '');
     setText('pria-ortu', CONFIG.mempelaiPria?.namaOrangTua || '');
     setText('wanita-nama', CONFIG.mempelaiWanita?.namaLengkap || '');
     setText('wanita-ortu', CONFIG.mempelaiWanita?.namaOrangTua || '');
     setText('event-waktu', CONFIG.waktuTeks || '');
+    setText('event-jam', CONFIG.jamTeks || '');
     setText('lokasi-nama', CONFIG.lokasiNama || '');
     setText('lokasi-alamat', CONFIG.lokasiAlamat || '');
 
@@ -53,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btnMusic) btnMusic.addEventListener('click', toggleMusic);
 
-    // 4. TRANSISI BUKA UNDANGAN (SLIDE & SCALE MULUS)
+    // 4. TRANSISI BUKA UNDANGAN ANGGUN (1.8 DETIK SLOW CURTAIN)
     const btnBuka = document.getElementById('btn-buka');
     if (btnBuka) {
       btnBuka.addEventListener('click', () => {
@@ -70,8 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }).catch(() => {});
         }
 
-        // Trigger scroll animations setelah dibuka
-        setTimeout(() => { triggerScrollAnimation(); }, 300);
+        setTimeout(() => { triggerScrollAnimation(); }, 400);
       });
     }
 
@@ -103,12 +104,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // 7. CAROUSEL AUTO-SLIDE OTOMATIS 3 DETIK
+    // 7. CAROUSEL SLIDE OTOMATIS 3 DETIK
     let currentImgIndex = 0;
     const carouselImg = document.getElementById('carousel-img');
     const updateCarousel = () => {
       if (carouselImg && Array.isArray(CONFIG.fotoGaleri) && CONFIG.fotoGaleri.length > 0) {
-        carouselImg.style.opacity = '0';
+        carouselImg.style.opacity = '0.2';
         setTimeout(() => {
           carouselImg.src = CONFIG.fotoGaleri[currentImgIndex];
           carouselImg.style.opacity = '1';
@@ -118,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
     
     updateCarousel();
 
-    // Auto-slide per 3000 ms (3 detik)
     let autoSlideTimer = setInterval(() => {
       if (CONFIG.fotoGaleri && CONFIG.fotoGaleri.length > 0) {
         currentImgIndex = (currentImgIndex + 1) % CONFIG.fotoGaleri.length;
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // 9. Submit RSVP
+    // 9. RSVP Submit
     const rsvpForm = document.getElementById('rsvp-form');
     if (rsvpForm) {
       rsvpForm.addEventListener('submit', (e) => {
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 10. EFEK TRANSISI SCROLL REVEAL (INTERSECTION OBSERVER)
+  // 10. SCROLL REVEAL ANIMATION
   const triggerScrollAnimation = () => {
     const reveals = document.querySelectorAll('.scroll-reveal');
     const observer = new IntersectionObserver((entries) => {
@@ -216,25 +216,10 @@ document.addEventListener("DOMContentLoaded", () => {
           entry.target.classList.add('active');
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1 });
 
     reveals.forEach(el => observer.observe(el));
   };
 
   triggerScrollAnimation();
-
-  // 11. EFEK 3D TILT INTERAKTIF
-  const cards = document.querySelectorAll('.3d-card, .cover-card');
-  cards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      card.style.transform = `perspective(1000px) rotateX(${-y / 28}deg) rotateY(${x / 28}deg) translateZ(8px)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-    });
-  });
 });
