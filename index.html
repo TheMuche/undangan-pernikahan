@@ -3,160 +3,182 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Undangan Pernikahan</title>
+  <title>Undangan Pernikahan Digital</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <div class="mobile-wrapper">
-
-    <!-- COVER DEPAN -->
-    <div id="cover" class="cover-overlay">
-      <div>
-        <p class="subtitle">The Wedding of</p>
-        <h1 id="cover-mempelai">Pria & Wanita</h1>
+  <!-- COVER DEPAN (SPLASH SCREEN NUANSA JAWA ELEGANT) -->
+  <div id="cover" class="cover-overlay">
+    <div class="cover-card scroll-reveal active">
+      
+      <!-- BINGKAI FOTO KUBAH ARCH ALA GAMBAR -->
+      <div class="arch-frame cover-photo">
+        <img src="https://picsum.photos/600/800?random=10" alt="Foto Mempelai">
       </div>
 
-      <div class="guest-card">
-        <p style="font-size: 0.8rem; color: var(--text-muted);">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-        <h3 id="nama-tamu" style="margin: 8px 0;">Tamu Undangan</h3>
-        <p style="font-size: 0.75rem; color: var(--text-muted);">Kami mengundang Anda untuk hadir di hari bahagia kami.</p>
+      <p class="subtitle">THE WEDDING OF</p>
+      <h1 id="cover-mempelai" class="title-jawa">Aisyah & Dedy</h1>
+      <p id="cover-waktu" class="date-jawa">Minggu, 13 Desember 2026</p>
+
+      <!-- ORNAMEN WAYANG / GUNUNGAN SILUET -->
+      <div class="wayang-ornament">⛩️ 🪷 ⛩️</div>
+
+      <div class="guest-box">
+        <p style="font-size:0.8rem; color:var(--text-muted);">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+        <h3 id="nama-tamu">Tamu Undangan</h3>
       </div>
 
-      <button id="btn-buka" class="btn-main">✉️ Buka Undangan</button>
+      <button id="btn-buka" class="btn-primary-3d">📜 Buka Undangan</button>
     </div>
+  </div>
 
-    <!-- ISI UNDANGAN -->
-    <div id="main-content" class="hidden">
+  <!-- ISI UNDANGAN UTAMA -->
+  <div id="main-content" class="main-content hidden">
 
-      <audio id="bg-music" loop></audio>
-      <button id="btn-music" class="btn-music-disc">🎵</button>
+    <!-- AUDIO PLAYER & FLOATING DISK BUTTON -->
+    <audio id="bg-music" loop></audio>
+    <button id="btn-music" class="btn-music-disc">🎵</button>
 
-      <!-- HERO SECTION -->
-      <section class="section" style="text-align: center;">
-        <p class="subtitle">Walimatul 'Ursy</p>
-        <h1 id="hero-mempelai">Pria & Wanita</h1>
-        <p id="hero-waktu" style="color: var(--text-muted); font-size: 0.9rem;">13 Desember 2026</p>
-
-        <!-- COUNTDOWN -->
-        <div class="countdown-grid">
-          <div class="time-card"><span id="days">0</span><small>Hari</small></div>
-          <div class="time-card"><span id="hours">0</span><small>Jam</small></div>
-          <div class="time-card"><span id="minutes">0</span><small>Menit</small></div>
-          <div class="time-card"><span id="seconds">0</span><small>Detik</small></div>
+    <!-- HERO SECTION -->
+    <section class="section">
+      <div class="glass-card 3d-card scroll-reveal">
+        <!-- BINGKAI FOTO KUBAH DEPAN -->
+        <div class="arch-frame hero-photo">
+          <img src="https://picsum.photos/600/800?random=10" alt="Foto Mempelai">
         </div>
-      </section>
 
-      <!-- PROFIL MEMPELAI -->
-      <section class="section">
+        <p class="subtitle">WALIMATUL 'URSY</p>
+        <h1 id="hero-mempelai" class="title-jawa">Aisyah & Dedy</h1>
+        <p id="hero-waktu" class="date-jawa">13 Desember 2026</p>
+
+        <!-- COUNTDOWN TIMER 3D -->
+        <div class="countdown-container">
+          <div class="timer-box"><span id="days">0</span><small>Hari</small></div>
+          <div class="timer-box"><span id="hours">0</span><small>Jam</small></div>
+          <div class="timer-box"><span id="minutes">0</span><small>Menit</small></div>
+          <div class="timer-box"><span id="seconds">0</span><small>Detik</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFIL MEMPELAI -->
+    <section class="section">
+      <div class="glass-card 3d-card scroll-reveal">
         <h2>Mempelai Pernikahan</h2>
+        <p class="intro-text">"Maha Suci Allah yang telah menciptakan pasangan-pasangan semuanya..."</p>
         
-        <div class="mempelai-profile">
-          <div class="avatar-frame">
-            <img src="https://picsum.photos/200/300?random=1" alt="Mempelai Pria">
+        <div class="mempelai-grid">
+          <div class="mempelai-card">
+            <div class="arch-frame mini-avatar">
+              <img src="https://picsum.photos/300/400?random=1" alt="Mempelai Pria">
+            </div>
+            <h3 id="pria-nama">Mempelai Pria</h3>
+            <p id="pria-ortu">Putra dari...</p>
           </div>
-          <h3 id="pria-nama">Mempelai Pria</h3>
-          <p id="pria-ortu" style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">Putra dari Bapak... & Ibu...</p>
-        </div>
 
-        <div style="text-align: center; font-family: var(--font-heading); font-size: 2rem; color: var(--accent-gold);">&</div>
+          <div class="separator">🪷</div>
 
-        <div class="mempelai-profile">
-          <div class="avatar-frame">
-            <img src="https://picsum.photos/200/300?random=2" alt="Mempelai Wanita">
+          <div class="mempelai-card">
+            <div class="arch-frame mini-avatar">
+              <img src="https://picsum.photos/300/400?random=2" alt="Mempelai Wanita">
+            </div>
+            <h3 id="wanita-nama">Mempelai Wanita</h3>
+            <p id="wanita-ortu">Putri dari...</p>
           </div>
-          <h3 id="wanita-nama">Mempelai Wanita</h3>
-          <p id="wanita-ortu" style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">Putri dari Bapak... & Ibu...</p>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- JADWAL & LOKASI -->
-      <section class="section">
+    <!-- JADWAL & LOKASI -->
+    <section class="section">
+      <div class="glass-card 3d-card scroll-reveal">
         <h2>Waktu & Lokasi Acara</h2>
-        
-        <div class="card-box">
-          <h3 style="margin-bottom: 5px;">Akad & Resepsi</h3>
-          <p id="event-waktu" style="font-weight: 600; color: var(--primary); margin-bottom: 15px;">Minggu, 13 Desember 2026</p>
-          <p id="lokasi-nama" style="font-weight: 600;">Nama Gedung</p>
-          <p id="lokasi-alamat" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Alamat Lengkap</p>
-
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <a id="btn-maps" href="#" target="_blank" class="btn-sub">📍 Buka Google Maps</a>
-            <button id="btn-calendar" class="btn-sub">📅 Simpan ke Google Calendar</button>
+        <div class="event-card">
+          <h3>Akad & Resepsi</h3>
+          <p id="event-waktu" class="highlight-text">13 Desember 2026</p>
+          <h4 id="lokasi-nama">Nama Gedung</h4>
+          <p id="lokasi-alamat">Alamat Lengkap</p>
+          
+          <div class="btn-group">
+            <a id="btn-maps" href="#" target="_blank" class="btn-secondary-3d">📍 Buka Google Maps</a>
+            <button id="btn-calendar" class="btn-secondary-3d">📅 Simpan ke Google Calendar</button>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- KISAH CINTA -->
-      <section class="section">
+    <!-- KISAH CINTA -->
+    <section class="section">
+      <div class="glass-card 3d-card scroll-reveal">
         <h2>Kisah Perjalanan Kami</h2>
-        <div class="card-box">
-          <div id="timeline-container" class="timeline"></div>
-        </div>
-      </section>
+        <div id="timeline-container" class="timeline"></div>
+      </div>
+    </section>
 
-      <!-- GALERI FOTO -->
-      <section class="section">
+    <!-- GALERI FOTO (AUTO-SLIDE SETENGAH LAYAR HP) -->
+    <section class="section">
+      <div class="glass-card 3d-card scroll-reveal">
         <h2>Momen Bahagia</h2>
-        <div class="card-box" style="padding: 15px;">
-          <div class="carousel-slide">
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">(Slide Foto Otomatis 3 Detik)</p>
+
+        <div class="carousel-container">
+          <button id="prev-slide" class="carousel-btn">❮</button>
+          <!-- BINGKAI GALERI BENTUK ARCH / KUBAH SETENGAH LAYAR -->
+          <div class="arch-frame carousel-slide">
             <img id="carousel-img" src="" alt="Foto Galeri">
           </div>
-          <div class="carousel-nav">
-            <button id="prev-slide" class="btn-sub" style="width: 48%;">❮ Sebelumnya</button>
-            <button id="next-slide" class="btn-sub" style="width: 48%;">Selanjutnya ❯</button>
+          <button id="next-slide" class="carousel-btn">❯</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- KONFIRMASI RSVP -->
+    <section class="section">
+      <div class="glass-card 3d-card scroll-reveal">
+        <h2>Konfirmasi Kehadiran (RSVP)</h2>
+        <form id="rsvp-form" class="rsvp-form">
+          <div class="form-group">
+            <label for="rsvp-nama">Nama Lengkap</label>
+            <input type="text" id="rsvp-nama" required placeholder="Masukkan nama Anda">
           </div>
-        </div>
-      </section>
+          
+          <div class="form-group">
+            <label for="rsvp-status">Status Kehadiran</label>
+            <select id="rsvp-status" required>
+              <option value="Hadir">Hadir</option>
+              <option value="Tidak Hadir">Tidak Hadir</option>
+              <option value="Ragu-Ragu">Ragu-Ragu</option>
+            </select>
+          </div>
 
-      <!-- RSVP -->
-      <section class="section">
-        <h2>Konfirmasi Kehadiran</h2>
-        <div class="card-box">
-          <form id="rsvp-form">
-            <div class="form-group">
-              <label for="rsvp-nama">Nama Lengkap</label>
-              <input type="text" id="rsvp-nama" required placeholder="Masukkan nama Anda">
-            </div>
+          <div class="form-group">
+            <label for="rsvp-jumlah">Jumlah Tamu</label>
+            <select id="rsvp-jumlah">
+              <option value="1">1 Orang</option>
+              <option value="2">2 Orang</option>
+            </select>
+          </div>
 
-            <div class="form-group">
-              <label for="rsvp-status">Status Kehadiran</label>
-              <select id="rsvp-status" required>
-                <option value="Hadir">Hadir</option>
-                <option value="Tidak Hadir">Tidak Hadir</option>
-                <option value="Ragu-Ragu">Ragu-Ragu</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label for="rsvp-pesan">Ucapan & Doa</label>
+            <textarea id="rsvp-pesan" rows="3" placeholder="Tulis ucapan selamat..."></textarea>
+          </div>
 
-            <div class="form-group">
-              <label for="rsvp-jumlah">Jumlah Tamu</label>
-              <select id="rsvp-jumlah">
-                <option value="1">1 Orang</option>
-                <option value="2">2 Orang</option>
-              </select>
-            </div>
+          <button type="submit" id="btn-submit-rsvp" class="btn-primary-3d">Kirim Konfirmasi</button>
+          <p id="rsvp-response-message" class="response-msg"></p>
+        </form>
+      </div>
+    </section>
 
-            <div class="form-group">
-              <label for="rsvp-pesan">Ucapan & Doa</label>
-              <textarea id="rsvp-pesan" rows="3" placeholder="Berikan ucapan selamat..."></textarea>
-            </div>
-
-            <button type="submit" id="btn-submit-rsvp" class="btn-main">Kirim RSVP</button>
-            <p id="rsvp-response-message" style="margin-top: 10px; font-size: 0.85rem;"></p>
-          </form>
-        </div>
-      </section>
-
-      <!-- FOOTER -->
-      <footer class="footer">
-        <p style="font-size: 0.85rem; opacity: 0.9;">Sampai Jumpa di Hari Bahagia Kami</p>
-        <h3 id="footer-mempelai">Pria & Wanita</h3>
-      </footer>
-
-    </div>
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>Terima Kasih atas Doa & Restu Anda</p>
+      <p id="footer-mempelai" class="footer-names title-jawa">Aisyah & Dedy</p>
+    </footer>
 
   </div>
 
