@@ -1,11 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Fungsi pembantu untuk mengisi teks secara aman
   const setText = (id, text) => {
     const el = document.getElementById(id);
     if (el && text !== undefined) el.textContent = text;
   };
 
-  // 1. Dapatkan Nama Tamu dari URL Parameter (?to=Nama+Tamu)
+  // 1. Ambil Nama Tamu dari URL (?to=Nama+Tamu)
   const urlParams = new URLSearchParams(window.location.search);
   const guestName = urlParams.get('to');
   if (guestName) {
@@ -32,8 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnMaps = document.getElementById('btn-maps');
     if (btnMaps && CONFIG.googleMapsUrl) btnMaps.href = CONFIG.googleMapsUrl;
 
-    // 3. Pengontrol Musik
+    // 3. Audio Controller (Rotating Disc Effect)
     const audio = document.getElementById('bg-music');
+    const btnMusic = document.getElementById('btn-music');
     if (audio && CONFIG.musikUrl) audio.src = CONFIG.musikUrl;
     let isPlaying = false;
 
@@ -41,16 +41,19 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!audio) return;
       if (isPlaying) {
         audio.pause();
+        btnMusic.classList.remove('playing');
         isPlaying = false;
       } else {
-        audio.play().then(() => { isPlaying = true; }).catch(() => {});
+        audio.play().then(() => {
+          isPlaying = true;
+          btnMusic.classList.add('playing');
+        }).catch(() => {});
       }
     };
 
-    const btnMusic = document.getElementById('btn-music');
     if (btnMusic) btnMusic.addEventListener('click', toggleMusic);
 
-    // 4. Tombol Buka Undangan
+    // 4. Buka Undangan
     const btnBuka = document.getElementById('btn-buka');
     if (btnBuka) {
       btnBuka.addEventListener('click', () => {
@@ -59,12 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (cover) cover.classList.add('hidden');
         if (mainContent) mainContent.classList.remove('hidden');
         if (audio && CONFIG.musikUrl) {
-          audio.play().then(() => { isPlaying = true; }).catch(() => {});
+          audio.play().then(() => {
+            isPlaying = true;
+            if (btnMusic) btnMusic.classList.add('playing');
+          }).catch(() => {});
         }
       });
     }
 
-    // 5. Hitung Mundur (Countdown)
+    // 5. Countdown Timer
     if (CONFIG.tanggalPernikahan) {
       const targetDate = new Date(CONFIG.tanggalPernikahan).getTime();
       setInterval(() => {
@@ -87,12 +93,12 @@ document.addEventListener("DOMContentLoaded", () => {
       CONFIG.kisahCinta.forEach(item => {
         const el = document.createElement('div');
         el.className = 'timeline-item';
-        el.innerHTML = `<div class="timeline-year">${item.tahun}</div><p>${item.cerita}</p>`;
+        el.innerHTML = `<div class="timeline-year">${item.tahun}</div><p style="font-size: 0.85rem; color: var(--text-muted);">${item.cerita}</p>`;
         timelineContainer.appendChild(el);
       });
     }
 
-    // 7. Carousel Galeri Foto
+    // 7. Carousel Foto
     let currentImgIndex = 0;
     const carouselImg = document.getElementById('carousel-img');
     const updateCarousel = () => {
@@ -122,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // 8. Tambah ke Google Calendar
+    // 8. Google Calendar Button
     const btnCalendar = document.getElementById('btn-calendar');
     if (btnCalendar) {
       btnCalendar.addEventListener('click', () => {
@@ -134,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // 9. Kirim RSVP ke Google Sheets
+    // 9. Submit RSVP
     const rsvpForm = document.getElementById('rsvp-form');
     if (rsvpForm) {
       rsvpForm.addEventListener('submit', (e) => {
@@ -163,70 +169,25 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .then(() => {
             if (msgOutput) {
-              msgOutput.textContent = "✅ Terima kasih! Konfirmasi Anda telah berhasil disimpan.";
-              msgOutput.style.color = "#2e7d32";
+              msgOutput.textContent = "✅ Terimakasih! Konfirmasi Anda telah tersimpan.";
+              msgOutput.style.color = "green";
             }
             rsvpForm.reset();
           })
           .catch(() => {
             if (msgOutput) {
-              msgOutput.textContent = "❌ Terjadi kesalahan. Silakan coba lagi.";
-              msgOutput.style.color = "#d32f2f";
+              msgOutput.textContent = "❌ Gagal mengunggah data. Coba lagi.";
+              msgOutput.style.color = "red";
             }
           })
           .finally(() => {
             if (btnSubmit) {
               btnSubmit.disabled = false;
-              btnSubmit.textContent = "Kirim Konfirmasi";
+              btnSubmit.textContent = "Kirim RSVP";
             }
           });
-        } else {
-          if (msgOutput) {
-            msgOutput.textContent = "⚠️ Link Google Script belum diisi di config.js";
-            msgOutput.style.color = "#b71c1c";
-          }
-          if (btnSubmit) {
-            btnSubmit.disabled = false;
-            btnSubmit.textContent = "Kirim Konfirmasi";
-          }
         }
       });
     }
   }
-
-  // 10. Efek Partikel Melayang 3D
-  try {
-    const bgParticles = document.createElement('div');
-    bgParticles.className = 'bg-particles';
-    document.body.appendChild(bgParticles);
-
-    for (let i = 0; i < 15; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      const size = Math.random() * 12 + 6;
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
-      particle.style.left = `${Math.random() * 100}%`;
-      particle.style.animationDelay = `${Math.random() * 8}s`;
-      particle.style.animationDuration = `${Math.random() * 10 + 8}s`;
-      bgParticles.appendChild(particle);
-    }
-  } catch(e) {}
-
-  // 11. Efek 3D Tilt Kartu Kaca
-  try {
-    const cards = document.querySelectorAll('.glass-card, .cover-card');
-    cards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        card.style.transform = `perspective(1000px) rotateX(${-y / 25}deg) rotateY(${x / 25}deg) translateZ(10px)`;
-      });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-      });
-    });
-  } catch(e) {}
 });
