@@ -132,3 +132,37 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// Tambahkan kode ini di dalam document.addEventListener("DOMContentLoaded", () => { ... })
+
+  // 10. EFEK PARTIKEL 3D MELAYANG DI BACKGROUND
+  const bgParticles = document.createElement('div');
+  bgParticles.className = 'bg-particles';
+  document.body.appendChild(bgParticles);
+
+  for (let i = 0; i < 15; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    const size = Math.random() * 12 + 6;
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.animationDelay = `${Math.random() * 8}s`;
+    particle.style.animationDuration = `${Math.random() * 10 + 8}s`;
+    bgParticles.appendChild(particle);
+  }
+
+  // 11. EFEK 3D TILT PADA KARTU GLASSMORPHISM
+  const cards = document.querySelectorAll('.glass-card, .cover-card');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      card.style.transform = `perspective(1000px) rotateX(${-y / 25}deg) rotateY(${x / 25}deg) translateZ(10px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+    });
+  });
