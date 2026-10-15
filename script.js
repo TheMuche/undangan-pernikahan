@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2. Load data dari config.js
   if (typeof CONFIG !== 'undefined') {
-    const namaPasangan = `${CONFIG.mempelaiPria?.namaPanggilan || 'Pria'} & ${CONFIG.mempelaiWanita?.namaPanggilan || 'Wanita'}`;
+    const namaPasangan = `${CONFIG.mempelaiWanita?.namaPanggilan || 'Aisyah'} & ${CONFIG.mempelaiPria?.namaPanggilan || 'Dedy'}`;
     setText('cover-mempelai', namaPasangan);
     setText('hero-mempelai', namaPasangan);
     setText('footer-mempelai', namaPasangan);
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnMaps = document.getElementById('btn-maps');
     if (btnMaps && CONFIG.googleMapsUrl) btnMaps.href = CONFIG.googleMapsUrl;
 
-    // 3. Audio Controller (Rotating Disc Effect)
+    // 3. Audio Controller
     const audio = document.getElementById('bg-music');
     const btnMusic = document.getElementById('btn-music');
     if (audio && CONFIG.musikUrl) audio.src = CONFIG.musikUrl;
@@ -41,32 +41,37 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!audio) return;
       if (isPlaying) {
         audio.pause();
-        btnMusic.classList.remove('playing');
+        if (btnMusic) btnMusic.classList.remove('playing');
         isPlaying = false;
       } else {
         audio.play().then(() => {
           isPlaying = true;
-          btnMusic.classList.add('playing');
+          if (btnMusic) btnMusic.classList.add('playing');
         }).catch(() => {});
       }
     };
 
     if (btnMusic) btnMusic.addEventListener('click', toggleMusic);
 
-    // 4. Buka Undangan
+    // 4. TRANSISI BUKA UNDANGAN (SLIDE & SCALE MULUS)
     const btnBuka = document.getElementById('btn-buka');
     if (btnBuka) {
       btnBuka.addEventListener('click', () => {
         const cover = document.getElementById('cover');
         const mainContent = document.getElementById('main-content');
-        if (cover) cover.classList.add('hidden');
+        
+        if (cover) cover.classList.add('slide-out');
         if (mainContent) mainContent.classList.remove('hidden');
+
         if (audio && CONFIG.musikUrl) {
           audio.play().then(() => {
             isPlaying = true;
             if (btnMusic) btnMusic.classList.add('playing');
           }).catch(() => {});
         }
+
+        // Trigger scroll animations setelah dibuka
+        setTimeout(() => { triggerScrollAnimation(); }, 300);
       });
     }
 
@@ -93,38 +98,49 @@ document.addEventListener("DOMContentLoaded", () => {
       CONFIG.kisahCinta.forEach(item => {
         const el = document.createElement('div');
         el.className = 'timeline-item';
-        el.innerHTML = `<div class="timeline-year">${item.tahun}</div><p style="font-size: 0.85rem; color: var(--text-muted);">${item.cerita}</p>`;
+        el.innerHTML = `<div class="timeline-year">${item.tahun}</div><p style="font-size:0.85rem; color:var(--text-muted);">${item.cerita}</p>`;
         timelineContainer.appendChild(el);
       });
     }
 
-    // 7. Carousel Foto
+    // 7. CAROUSEL AUTO-SLIDE OTOMATIS 3 DETIK
     let currentImgIndex = 0;
     const carouselImg = document.getElementById('carousel-img');
     const updateCarousel = () => {
       if (carouselImg && Array.isArray(CONFIG.fotoGaleri) && CONFIG.fotoGaleri.length > 0) {
-        carouselImg.src = CONFIG.fotoGaleri[currentImgIndex];
+        carouselImg.style.opacity = '0';
+        setTimeout(() => {
+          carouselImg.src = CONFIG.fotoGaleri[currentImgIndex];
+          carouselImg.style.opacity = '1';
+        }, 200);
       }
     };
+    
     updateCarousel();
+
+    // Auto-slide per 3000 ms (3 detik)
+    let autoSlideTimer = setInterval(() => {
+      if (CONFIG.fotoGaleri && CONFIG.fotoGaleri.length > 0) {
+        currentImgIndex = (currentImgIndex + 1) % CONFIG.fotoGaleri.length;
+        updateCarousel();
+      }
+    }, 3000);
 
     const btnNext = document.getElementById('next-slide');
     if (btnNext) {
       btnNext.addEventListener('click', () => {
-        if (CONFIG.fotoGaleri && CONFIG.fotoGaleri.length > 0) {
-          currentImgIndex = (currentImgIndex + 1) % CONFIG.fotoGaleri.length;
-          updateCarousel();
-        }
+        clearInterval(autoSlideTimer);
+        currentImgIndex = (currentImgIndex + 1) % CONFIG.fotoGaleri.length;
+        updateCarousel();
       });
     }
 
     const btnPrev = document.getElementById('prev-slide');
     if (btnPrev) {
       btnPrev.addEventListener('click', () => {
-        if (CONFIG.fotoGaleri && CONFIG.fotoGaleri.length > 0) {
-          currentImgIndex = (currentImgIndex - 1 + CONFIG.fotoGaleri.length) % CONFIG.fotoGaleri.length;
-          updateCarousel();
-        }
+        clearInterval(autoSlideTimer);
+        currentImgIndex = (currentImgIndex - 1 + CONFIG.fotoGaleri.length) % CONFIG.fotoGaleri.length;
+        updateCarousel();
       });
     }
 
@@ -132,8 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnCalendar = document.getElementById('btn-calendar');
     if (btnCalendar) {
       btnCalendar.addEventListener('click', () => {
-        const title = encodeURIComponent(`Pernikahan ${CONFIG.mempelaiPria?.namaPanggilan || ''} & ${CONFIG.mempelaiWanita?.namaPanggilan || ''}`);
-        const details = encodeURIComponent(`Acara Pernikahan ${CONFIG.mempelaiPria?.namaLengkap || ''} & ${CONFIG.mempelaiWanita?.namaLengkap || ''}`);
+        const title = encodeURIComponent(`Pernikahan ${CONFIG.mempelaiWanita?.namaPanggilan || ''} & ${CONFIG.mempelaiPria?.namaPanggilan || ''}`);
+        const details = encodeURIComponent(`Acara Pernikahan ${CONFIG.mempelaiWanita?.namaLengkap || ''} & ${CONFIG.mempelaiPria?.namaLengkap || ''}`);
         const location = encodeURIComponent(`${CONFIG.lokasiNama || ''}, ${CONFIG.lokasiAlamat || ''}`);
         const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261213T060000Z/20261213T080000Z&details=${details}&location=${location}`;
         window.open(calUrl, '_blank');
@@ -169,25 +185,56 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .then(() => {
             if (msgOutput) {
-              msgOutput.textContent = "✅ Terimakasih! Konfirmasi Anda telah tersimpan.";
+              msgOutput.textContent = "✅ Terima kasih! Konfirmasi Anda telah disimpan.";
               msgOutput.style.color = "green";
             }
             rsvpForm.reset();
           })
           .catch(() => {
             if (msgOutput) {
-              msgOutput.textContent = "❌ Gagal mengunggah data. Coba lagi.";
+              msgOutput.textContent = "❌ Terjadi kesalahan. Silakan coba lagi.";
               msgOutput.style.color = "red";
             }
           })
           .finally(() => {
             if (btnSubmit) {
               btnSubmit.disabled = false;
-              btnSubmit.textContent = "Kirim RSVP";
+              btnSubmit.textContent = "Kirim Konfirmasi";
             }
           });
         }
       });
     }
   }
+
+  // 10. EFEK TRANSISI SCROLL REVEAL (INTERSECTION OBSERVER)
+  const triggerScrollAnimation = () => {
+    const reveals = document.querySelectorAll('.scroll-reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => observer.observe(el));
+  };
+
+  triggerScrollAnimation();
+
+  // 11. EFEK 3D TILT INTERAKTIF
+  const cards = document.querySelectorAll('.3d-card, .cover-card');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      card.style.transform = `perspective(1000px) rotateX(${-y / 28}deg) rotateY(${x / 28}deg) translateZ(8px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+    });
+  });
 });
